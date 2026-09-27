@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-19 09:47+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: prefs.js:29
+msgid "Settings"
+msgstr ""
+
+#: prefs.js:35
+msgid "Connection"
+msgstr ""
+
+#: prefs.js:36
+msgid "VPN portal configuration"
+msgstr ""
+
+#: prefs.js:40
+msgid "Portal Address"
+msgstr ""
+
+#: prefs.js:55
+msgid "Username (optional)"
+msgstr ""
+
+#: prefs.js:67
+msgid "Options"
+msgstr ""
+
+#: prefs.js:71
+msgid "SSL Only Mode"
+msgstr ""
+
+#: prefs.js:72
+msgid "Force SSL-only connections"
+msgstr ""
+
+#: prefs.js:78
+msgid "Poll Interval (seconds)"
+msgstr ""
+
+#: prefs.js:79
+msgid "How often to check VPN status"
+msgstr ""
+
+#: prefs.js:87
+msgid "About"
+msgstr ""
+
+#: prefs.js:96
+msgid "Repository"
+msgstr ""

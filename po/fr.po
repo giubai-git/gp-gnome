@@ -1,4 +1,3 @@
-# Anthony B. <support@giubai.fr>, 2026.
 # giubai-git <>, 2026.
 #
 msgid ""

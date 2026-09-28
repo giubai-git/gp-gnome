@@ -1,0 +1,706 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# giubai-git <>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-28 14:43+0200\n"
+"PO-Revision-Date: 2026-09-29 00:25+0200\n"
+"Last-Translator: giubai-git <>\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Gtranslator 51.0\n"
+
+#: indicator.js:208 indicator.js:493
+msgid "Not connected"
+msgstr "Non connecté"
+
+#: indicator.js:229 indicator.js:495
+msgid "Connect"
+msgstr "Connecté"
+
+#: indicator.js:237
+msgid "Advanced"
+msgstr "Avancés"
+
+#: indicator.js:241
+msgid "Rediscover Network"
+msgstr ""
+
+#: indicator.js:242
+msgid "Network Rediscovery"
+msgstr ""
+
+#: indicator.js:246
+msgid "Resubmit HIP"
+msgstr ""
+
+#: indicator.js:247
+msgid "HIP Resubmission"
+msgstr ""
+
+#: indicator.js:251
+msgid "Collect Logs"
+msgstr ""
+
+#: indicator.js:256
+msgid "Report Issue"
+msgstr ""
+
+#: indicator.js:263
+msgid "Show"
+msgstr ""
+
+#: indicator.js:267
+msgid "Host State"
+msgstr ""
+
+#: indicator.js:272
+msgid "Errors"
+msgstr "Erreurs"
+
+#: indicator.js:277
+msgid "Notifications"
+msgstr "Notifications"
+
+#: indicator.js:282
+msgid "Help"
+msgstr "Aide"
+
+#: indicator.js:287
+msgid "Version"
+msgstr "Version"
+
+#: indicator.js:294 indicator.js:1122 indicator.js:1414 prefs.js:29
+msgid "Settings"
+msgstr "Paramètres"
+
+#: indicator.js:302
+msgid "Select Gateway"
+msgstr ""
+
+#: indicator.js:412
+msgid "Waiting for authentication..."
+msgstr "En attente de l'authentification..."
+
+#: indicator.js:414 indicator.js:418 indicator.js:841 indicator.js:1424
+#: indicator.js:1668
+msgid "Cancel"
+msgstr "Annuler"
+
+#: indicator.js:416
+msgid "Connecting..."
+msgstr "Connexion..."
+
+#: indicator.js:420
+msgid "Disconnecting..."
+msgstr "Déconnexion..."
+
+#: indicator.js:422 indicator.js:432
+msgid "Disconnect"
+msgstr "Déconnecté"
+
+#: indicator.js:426
+#, javascript-format
+msgid "Connected to %s"
+msgstr ""
+
+#: indicator.js:427
+msgid "Connected"
+msgstr "Connecté"
+
+#: indicator.js:454 indicator.js:481
+#, javascript-format
+msgid "Gateway: %s"
+msgstr ""
+
+#: indicator.js:457 indicator.js:484
+#, javascript-format
+msgid "Assigned IP: %s"
+msgstr ""
+
+#: indicator.js:460 indicator.js:487
+#, javascript-format
+msgid "Gateway IP: %s"
+msgstr ""
+
+#: indicator.js:541
+msgid "Disconnected from VPN"
+msgstr ""
+
+#: indicator.js:586
+msgid "Connected to VPN"
+msgstr ""
+
+#: indicator.js:588
+msgid "Connection failed"
+msgstr ""
+
+#: indicator.js:606
+msgid "Connection toggle failed"
+msgstr ""
+
+#: indicator.js:676
+msgid "Copy"
+msgstr ""
+
+#: indicator.js:680
+msgid "Copied"
+msgstr ""
+
+#: indicator.js:680
+msgid "Content copied to clipboard"
+msgstr ""
+
+#: indicator.js:686
+msgid "Close"
+msgstr ""
+
+#: indicator.js:710
+msgid "GlobalProtect Host State"
+msgstr ""
+
+#: indicator.js:714
+msgid "Failed to get host state"
+msgstr ""
+
+#: indicator.js:745
+#, javascript-format
+msgid "%s completed successfully"
+msgstr ""
+
+#: indicator.js:747
+#, javascript-format
+msgid "%s failed"
+msgstr ""
+
+#: indicator.js:781
+msgid "Change Portal"
+msgstr ""
+
+#: indicator.js:795
+#, javascript-format
+msgid "Current portal: %s"
+msgstr ""
+
+#: indicator.js:802
+msgid "New portal address:"
+msgstr ""
+
+#: indicator.js:810 indicator.js:1143
+msgid "vpn.example.com"
+msgstr ""
+
+#: indicator.js:818
+msgid "After changing, reconnect to VPN."
+msgstr ""
+
+#: indicator.js:827 indicator.js:1354
+msgid "Save"
+msgstr "Enregistrer"
+
+#: indicator.js:832
+msgid "Portal Changed"
+msgstr ""
+
+#: indicator.js:832
+#, javascript-format
+msgid ""
+"Portal set to: %s\n"
+"\n"
+"Reconnect to VPN to use new portal."
+msgstr ""
+
+#: indicator.js:865
+msgid "Failed to load gateway list"
+msgstr ""
+
+#: indicator.js:893
+msgid "No gateways available"
+msgstr ""
+
+#: indicator.js:899
+msgid "Connect to VPN to see gateways"
+msgstr ""
+
+#: indicator.js:902
+msgid "Gateway Selection"
+msgstr ""
+
+#: indicator.js:903
+msgid ""
+"To see available gateways:\n"
+"\n"
+"1. Connect to VPN first\n"
+"2. Open this menu again to see all gateways\n"
+"3. Click on a gateway to switch to it"
+msgstr ""
+
+#: indicator.js:925
+#, javascript-format
+msgid "✓ %s (current)"
+msgstr ""
+
+#: indicator.js:927
+#, javascript-format
+msgid "★ %s (preferred)"
+msgstr ""
+
+#: indicator.js:946
+#, javascript-format
+msgid "(cached %d s ago)"
+msgstr ""
+
+#: indicator.js:948
+#, javascript-format
+msgid "%d gateway available"
+msgid_plural "%d gateways available"
+msgstr[0] ""
+msgstr[1] ""
+
+#: indicator.js:956
+msgid "Refresh List"
+msgstr ""
+
+#: indicator.js:964
+msgid "Failed to update gateway menu"
+msgstr ""
+
+#: indicator.js:968
+msgid "Failed to load gateways"
+msgstr ""
+
+#: indicator.js:973
+msgid "Retry"
+msgstr ""
+
+#: indicator.js:995
+msgid "Switching Gateway"
+msgstr ""
+
+#: indicator.js:995
+#, javascript-format
+msgid "Switching to %s..."
+msgstr ""
+
+#: indicator.js:1006
+msgid "Could not disconnect before switching gateway. Please try again."
+msgstr ""
+
+#: indicator.js:1025
+msgid "Gateway Changed"
+msgstr ""
+
+#: indicator.js:1025
+#, javascript-format
+msgid "Successfully switched to: %s"
+msgstr ""
+
+#: indicator.js:1032
+msgid "Failed to switch gateway"
+msgstr ""
+
+#: indicator.js:1065 indicator.js:1067 indicator.js:1072 indicator.js:1074
+msgid "Log Collection"
+msgstr ""
+
+#: indicator.js:1065
+#, javascript-format
+msgid ""
+"Logs collected successfully.\n"
+"File: %s\n"
+"\n"
+"Folder opened in file manager."
+msgstr ""
+
+#: indicator.js:1067
+msgid ""
+"Logs collected successfully.\n"
+"\n"
+"Folder opened: ~/.GlobalProtect/"
+msgstr ""
+
+#: indicator.js:1072
+#, javascript-format
+msgid ""
+"Logs collected successfully.\n"
+"File: %s\n"
+"\n"
+"Note: ~/.GlobalProtect/ folder not found."
+msgstr ""
+
+#: indicator.js:1078
+msgid "Log Collection failed"
+msgstr ""
+
+#: indicator.js:1099
+msgid "Failed to open help"
+msgstr ""
+
+#: indicator.js:1136
+msgid "Portal Address:"
+msgstr ""
+
+#: indicator.js:1151
+msgid "Poll Interval (seconds):"
+msgstr ""
+
+#: indicator.js:1166
+msgid ""
+"Poll interval: how often to check VPN status (recommended: 5-10 seconds)"
+msgstr ""
+
+#: indicator.js:1175
+msgid "Username (optional):"
+msgstr ""
+
+#: indicator.js:1182
+msgid "username"
+msgstr "nom d'utilisateur"
+
+#: indicator.js:1189
+msgid ""
+"If specified, will be used for VPN connection. Leave empty to be prompted."
+msgstr ""
+
+#: indicator.js:1204
+msgid "Clear Credentials:"
+msgstr ""
+
+#: indicator.js:1210
+msgid "Clear Saved Credentials"
+msgstr ""
+
+#: indicator.js:1221
+msgid "Remove saved username and password from GlobalProtect"
+msgstr ""
+
+#: indicator.js:1236
+msgid "Advanced Settings:"
+msgstr ""
+
+#: indicator.js:1261 prefs.js:71
+msgid "SSL Only Mode"
+msgstr ""
+
+#: indicator.js:1268
+msgid "Force SSL-only connections (more secure)"
+msgstr ""
+
+#: indicator.js:1275
+msgid "Log Level:"
+msgstr "Niveau de journalisation:"
+
+#: indicator.js:1283
+msgid "Error"
+msgstr "Erreur"
+
+#: indicator.js:1284
+msgid "Warning"
+msgstr "Avertissement"
+
+#: indicator.js:1285
+msgid "Info"
+msgstr "Info"
+
+#: indicator.js:1286
+msgid "Debug"
+msgstr "Debug"
+
+#: indicator.js:1321
+msgid "Higher levels provide more detailed logs (debug = most verbose)"
+msgstr ""
+
+#: indicator.js:1328
+msgid "Client Certificate:"
+msgstr "Certificat Client:"
+
+#: indicator.js:1334
+msgid "Import Certificate..."
+msgstr "Importer le certificat..."
+
+#: indicator.js:1345
+msgid "Import client certificate for authentication"
+msgstr ""
+
+#: indicator.js:1362
+msgid "Settings saved:"
+msgstr ""
+
+#: indicator.js:1366
+#, javascript-format
+msgid "Portal: %s"
+msgstr ""
+
+#: indicator.js:1372
+#, javascript-format
+msgid "Poll interval: %d s"
+msgstr ""
+
+#: indicator.js:1385
+#, javascript-format
+msgid "Username: %s"
+msgstr ""
+
+#: indicator.js:1385
+msgid "(not set)"
+msgstr ""
+
+#: indicator.js:1392
+#, javascript-format
+msgid "SSL Only: %s"
+msgstr ""
+
+#: indicator.js:1392
+msgid "enabled"
+msgstr "activé"
+
+#: indicator.js:1392
+msgid "disabled"
+msgstr "désactivé"
+
+#: indicator.js:1397
+msgid "Failed to apply SSL only setting"
+msgstr ""
+
+#: indicator.js:1404
+#, javascript-format
+msgid "Log Level: %s"
+msgstr "Niveau de journalisation; %s"
+
+#: indicator.js:1409
+msgid "Failed to apply log level"
+msgstr ""
+
+#: indicator.js:1436
+msgid "Failed to show settings dialog"
+msgstr ""
+
+#: indicator.js:1449
+msgid "Issue Report"
+msgstr ""
+
+#: indicator.js:1451
+msgid "Failed to generate issue report"
+msgstr ""
+
+#: indicator.js:1467
+msgid "GlobalProtect Errors"
+msgstr ""
+
+#: indicator.js:1469
+msgid "Failed to get errors"
+msgstr ""
+
+#: indicator.js:1488
+msgid "GlobalProtect Notifications"
+msgstr ""
+
+#: indicator.js:1490
+msgid "Failed to get notifications"
+msgstr ""
+
+#: indicator.js:1512
+msgid "GNOME Shell Extension"
+msgstr ""
+
+#: indicator.js:1513
+#, javascript-format
+msgid "Extension version: %s"
+msgstr ""
+
+#: indicator.js:1515
+msgid "Description:"
+msgstr "Description:"
+
+#: indicator.js:1516
+msgid ""
+"GNOME Shell extension gp-gnome for GlobalProtect VPN CLI (PanGPLinux) "
+"integration."
+msgstr ""
+
+#: indicator.js:1517
+msgid "Provides complete VPN management with native GNOME integration,"
+msgstr ""
+
+#: indicator.js:1518
+msgid ""
+"comprehensive functionality, and intelligent handling of known CLI issues."
+msgstr ""
+
+#: indicator.js:1520
+msgid "Designed for GlobalProtect CLI (also known as PanGPLinux) -"
+msgstr ""
+
+#: indicator.js:1521
+msgid "the official Palo Alto Networks VPN client for Linux."
+msgstr ""
+
+#: indicator.js:1523
+msgid "Features:"
+msgstr "Fonctionnalitées:"
+
+#: indicator.js:1524
+msgid "Connect/disconnect with MFA support"
+msgstr ""
+
+#: indicator.js:1525
+msgid "Real-time connection monitoring"
+msgstr ""
+
+#: indicator.js:1526
+msgid "Gateway selection and switching"
+msgstr ""
+
+#: indicator.js:1527
+msgid "Interactive settings configuration"
+msgstr ""
+
+#: indicator.js:1528
+msgid "Advanced operations (HIP, logs, network rediscovery)"
+msgstr ""
+
+#: indicator.js:1529
+msgid "Automatic retry logic for CLI bugs"
+msgstr ""
+
+#: indicator.js:1530
+msgid "Auto-disconnect on logout"
+msgstr ""
+
+#: indicator.js:1531
+msgid "Native GNOME Shell integration"
+msgstr ""
+
+#: indicator.js:1533
+#, javascript-format
+msgid "Author: %s"
+msgstr "Auteur: %s"
+
+#: indicator.js:1536
+#, javascript-format
+msgid "License: %s"
+msgstr "Licence: %s"
+
+#: indicator.js:1540
+msgid "About gp-gnome"
+msgstr ""
+
+#: indicator.js:1542
+msgid "Failed to get version"
+msgstr ""
+
+#: indicator.js:1558
+msgid "Clear Credentials"
+msgstr ""
+
+#: indicator.js:1559
+msgid ""
+"This will clear your saved credentials and disconnect from VPN.\n"
+"\n"
+"To proceed, run in terminal:\n"
+"globalprotect remove-user\n"
+"\n"
+"Note: This command requires confirmation (y/n)"
+msgstr ""
+
+#: indicator.js:1562
+msgid "Failed to clear credentials"
+msgstr ""
+
+#: indicator.js:1577 indicator.js:1650
+msgid "Import Certificate"
+msgstr ""
+
+#: indicator.js:1591
+msgid "Enter the full path to your certificate file:"
+msgstr ""
+
+#: indicator.js:1598
+msgid "/path/to/certificate.pem"
+msgstr ""
+
+#: indicator.js:1606
+msgid "Example: /home/user/certificates/client.pem"
+msgstr ""
+
+#: indicator.js:1622
+msgid "Import"
+msgstr ""
+
+#: indicator.js:1627
+msgid "Please enter a certificate path"
+msgstr ""
+
+#: indicator.js:1635
+#, javascript-format
+msgid "File not found: %s"
+msgstr ""
+
+#: indicator.js:1642
+msgid "Warning: File should be .pem, .crt, or .cer"
+msgstr ""
+
+#: indicator.js:1650
+msgid "Importing certificate..."
+msgstr ""
+
+#: indicator.js:1655
+msgid "Certificate Imported"
+msgstr ""
+
+#: indicator.js:1657
+msgid "Failed to import certificate"
+msgstr ""
+
+#: indicator.js:1680
+msgid "Failed to show import dialog"
+msgstr ""
+
+#: prefs.js:35
+msgid "Connection"
+msgstr ""
+
+#: prefs.js:36
+msgid "VPN portal configuration"
+msgstr ""
+
+#: prefs.js:40
+msgid "Portal Address"
+msgstr ""
+
+#: prefs.js:55
+msgid "Username (optional)"
+msgstr ""
+
+#: prefs.js:67
+msgid "Options"
+msgstr "Options"
+
+#: prefs.js:72
+msgid "Force SSL-only connections"
+msgstr ""
+
+#: prefs.js:78
+msgid "Poll Interval (seconds)"
+msgstr ""
+
+#: prefs.js:79
+msgid "How often to check VPN status"
+msgstr ""
+
+#: prefs.js:87
+msgid "About"
+msgstr ""
+
+#: prefs.js:96
+msgid "Repository"
+msgstr ""

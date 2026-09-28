@@ -30,6 +30,7 @@ import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as ModalDialog from 'resource:///org/gnome/shell/ui/modalDialog.js';
+import {gettext as _, ngettext} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {ErrorHandler} from './errorHandler.js';
 import {statusDotState, statusDotStyle} from './statusIndicator.js';
 
@@ -204,7 +205,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
         // Status label (non-reactive)
         this._statusLabel = new St.Label({
-            text: 'Not connected',
+            text: _('Not connected'),
             style_class: 'globalprotect-status-label globalprotect-disconnected'
         });
 
@@ -225,7 +226,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         // Connect/Disconnect toggle button
-        this._toggleItem = new PopupMenu.PopupMenuItem('Connect');
+        this._toggleItem = new PopupMenu.PopupMenuItem(_('Connect'));
         this._toggleItem.connect('activate', this._onToggleConnection.bind(this));
         this.menu.addMenuItem(this._toggleItem);
 
@@ -233,64 +234,64 @@ class GlobalProtectIndicator extends PanelMenu.Button {
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         // Advanced submenu
-        const advancedMenu = new PopupMenu.PopupSubMenuMenuItem('Advanced');
+        const advancedMenu = new PopupMenu.PopupSubMenuMenuItem(_('Advanced'));
         advancedMenu.actor.add_style_class_name('globalprotect-advanced-menu');
 
         // Rediscover Network
-        const rediscoverItem = new PopupMenu.PopupMenuItem('Rediscover Network');
-        rediscoverItem.connect('activate', () => this._executeAdvancedCommand('rediscoverNetwork', 'Network Rediscovery'));
+        const rediscoverItem = new PopupMenu.PopupMenuItem(_('Rediscover Network'));
+        rediscoverItem.connect('activate', () => this._executeAdvancedCommand('rediscoverNetwork', _('Network Rediscovery')));
         advancedMenu.menu.addMenuItem(rediscoverItem);
 
         // Resubmit HIP
-        const resubmitHipItem = new PopupMenu.PopupMenuItem('Resubmit HIP');
-        resubmitHipItem.connect('activate', () => this._executeAdvancedCommand('resubmitHip', 'HIP Resubmission'));
+        const resubmitHipItem = new PopupMenu.PopupMenuItem(_('Resubmit HIP'));
+        resubmitHipItem.connect('activate', () => this._executeAdvancedCommand('resubmitHip', _('HIP Resubmission')));
         advancedMenu.menu.addMenuItem(resubmitHipItem);
 
         // Collect Logs
-        const collectLogItem = new PopupMenu.PopupMenuItem('Collect Logs');
+        const collectLogItem = new PopupMenu.PopupMenuItem(_('Collect Logs'));
         collectLogItem.connect('activate', () => this._collectLogsAndOpen());
         advancedMenu.menu.addMenuItem(collectLogItem);
 
         // Report Issue
-        const reportIssueItem = new PopupMenu.PopupMenuItem('Report Issue');
+        const reportIssueItem = new PopupMenu.PopupMenuItem(_('Report Issue'));
         reportIssueItem.connect('activate', () => this._reportIssue());
         advancedMenu.menu.addMenuItem(reportIssueItem);
 
         this.menu.addMenuItem(advancedMenu);
 
         // Show submenu - consolidate all Show options
-        const showMenu = new PopupMenu.PopupSubMenuMenuItem('Show');
+        const showMenu = new PopupMenu.PopupSubMenuMenuItem(_('Show'));
         showMenu.actor.add_style_class_name('globalprotect-show-menu');
 
         // Show Host State (HIP information)
-        const hostStateItem = new PopupMenu.PopupMenuItem('Host State');
+        const hostStateItem = new PopupMenu.PopupMenuItem(_('Host State'));
         hostStateItem.connect('activate', () => this._showHostState());
         showMenu.menu.addMenuItem(hostStateItem);
 
         // Show Errors
-        const errorsItem = new PopupMenu.PopupMenuItem('Errors');
+        const errorsItem = new PopupMenu.PopupMenuItem(_('Errors'));
         errorsItem.connect('activate', () => this._showErrors());
         showMenu.menu.addMenuItem(errorsItem);
 
         // Show Notifications
-        const notificationsItem = new PopupMenu.PopupMenuItem('Notifications');
+        const notificationsItem = new PopupMenu.PopupMenuItem(_('Notifications'));
         notificationsItem.connect('activate', () => this._showNotifications());
         showMenu.menu.addMenuItem(notificationsItem);
 
         // Show Help
-        const helpItem = new PopupMenu.PopupMenuItem('Help');
+        const helpItem = new PopupMenu.PopupMenuItem(_('Help'));
         helpItem.connect('activate', () => this._showHelp());
         showMenu.menu.addMenuItem(helpItem);
 
         // Show Version (About)
-        const versionItem = new PopupMenu.PopupMenuItem('Version');
+        const versionItem = new PopupMenu.PopupMenuItem(_('Version'));
         versionItem.connect('activate', () => this._showAbout());
         showMenu.menu.addMenuItem(versionItem);
 
         this.menu.addMenuItem(showMenu);
 
         // Settings - single menu item that opens comprehensive settings dialog
-        const settingsItem = new PopupMenu.PopupMenuItem('Settings');
+        const settingsItem = new PopupMenu.PopupMenuItem(_('Settings'));
         settingsItem.connect('activate', () => this._openSettingsDialog());
         this.menu.addMenuItem(settingsItem);
 
@@ -298,7 +299,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         // Gateway submenu (will be populated dynamically) - at bottom for quick access
-        this._gatewayMenu = new PopupMenu.PopupSubMenuMenuItem('Select Gateway');
+        this._gatewayMenu = new PopupMenu.PopupSubMenuMenuItem(_('Select Gateway'));
         this._gatewayMenu.actor.add_style_class_name('globalprotect-gateway-menu');
         this.menu.addMenuItem(this._gatewayMenu);
 
@@ -408,35 +409,34 @@ class GlobalProtectIndicator extends PanelMenu.Button {
         this._updateStatusDot(status);
 
         if (this._isMfaWaiting) {
-            this._statusLabel.text = 'Waiting for authentication...';
+            this._statusLabel.text = _('Waiting for authentication...');
             this._statusLabel.style_class = 'globalprotect-status-label globalprotect-mfa-waiting';
-            this._toggleItem.label.text = 'Cancel';
+            this._toggleItem.label.text = _('Cancel');
         } else if (this._isConnecting) {
-            this._statusLabel.text = 'Connecting...';
+            this._statusLabel.text = _('Connecting...');
             this._statusLabel.style_class = 'globalprotect-status-label globalprotect-transitioning';
-            this._toggleItem.label.text = 'Cancel';
+            this._toggleItem.label.text = _('Cancel');
         } else if (this._isDisconnecting) {
-            this._statusLabel.text = 'Disconnecting...';
+            this._statusLabel.text = _('Disconnecting...');
             this._statusLabel.style_class = 'globalprotect-status-label globalprotect-transitioning';
-            this._toggleItem.label.text = 'Disconnect';
+            this._toggleItem.label.text = _('Disconnect');
         } else if (status && status.connected) {
             // Connected state - get and cache connection details
-            let statusText = 'Connected';
-            if (status.portal) {
-                statusText += ` to ${status.portal}`;
-            }
+            let statusText = status.portal
+                ? _('Connected to %s').format(status.portal)
+                : _('Connected');
 
             // Set initial text immediately
             this._statusLabel.text = statusText;
             this._statusLabel.style_class = 'globalprotect-status-label globalprotect-connected';
-            this._toggleItem.label.text = 'Disconnect';
+            this._toggleItem.label.text = _('Disconnect');
 
             // Get connection details asynchronously and update UI when ready
             if (!this._connectionDetailsCache && this._gpClient && this._statusMonitor) {
                 // Use a timeout to prevent hanging
                 Promise.race([
                     this._gpClient.getDetails(),
-                    new Promise((_, reject) => {
+                    new Promise((_resolve, reject) => {
                         const timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 3000, () => {
                             this._timeoutIds.delete(timeoutId);
                             reject(new Error('Timeout'));
@@ -451,13 +451,13 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                     // Update status text with details
                     let detailedText = statusText;
                     if (details.gateway) {
-                        detailedText += `\nGateway: ${details.gateway}`;
+                        detailedText += `\n${_('Gateway: %s').format(details.gateway)}`;
                     }
                     if (details.assignedIp) {
-                        detailedText += `\nAssigned IP: ${details.assignedIp}`;
+                        detailedText += `\n${_('Assigned IP: %s').format(details.assignedIp)}`;
                     }
                     if (details.gatewayIp) {
-                        detailedText += `\nGateway IP: ${details.gatewayIp}`;
+                        detailedText += `\n${_('Gateway IP: %s').format(details.gatewayIp)}`;
                     }
 
                     console.info('gp-gnome: Updating status text to:', detailedText);
@@ -478,21 +478,21 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                 // Use cached details
                 const details = this._connectionDetailsCache;
                 if (details.gateway) {
-                    statusText += `\nGateway: ${details.gateway}`;
+                    statusText += `\n${_('Gateway: %s').format(details.gateway)}`;
                 }
                 if (details.assignedIp) {
-                    statusText += `\nAssigned IP: ${details.assignedIp}`;
+                    statusText += `\n${_('Assigned IP: %s').format(details.assignedIp)}`;
                 }
                 if (details.gatewayIp) {
-                    statusText += `\nGateway IP: ${details.gatewayIp}`;
+                    statusText += `\n${_('Gateway IP: %s').format(details.gatewayIp)}`;
                 }
                 this._statusLabel.text = statusText;
             }
         } else {
             // Disconnected state
-            this._statusLabel.text = 'Not connected';
+            this._statusLabel.text = _('Not connected');
             this._statusLabel.style_class = 'globalprotect-status-label globalprotect-disconnected';
-            this._toggleItem.label.text = 'Connect';
+            this._toggleItem.label.text = _('Connect');
 
             // Clear connection details cache
             this._connectionDetailsCache = null;
@@ -538,7 +538,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                 this._updateIcon(newStatus);
                 this._updateMenu(newStatus);
 
-                this._showNotification('GlobalProtect', 'Disconnected from VPN');
+                this._showNotification('GlobalProtect', _('Disconnected from VPN'));
             } else {
                 // Connect with MFA status callback
                 this._isConnecting = true;
@@ -583,9 +583,9 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                     this._isMfaWaiting = false;
 
                     if (result.success) {
-                        this._showNotification('GlobalProtect', 'Connected to VPN');
+                        this._showNotification('GlobalProtect', _('Connected to VPN'));
                     } else {
-                        throw new Error('Connection failed');
+                        throw new Error(_('Connection failed'));
                     }
                 }
             }
@@ -603,7 +603,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             }
 
             // Use ErrorHandler for consistent error handling
-            ErrorHandler.handle(e, 'Connection toggle failed', {
+            ErrorHandler.handle(e, _('Connection toggle failed'), {
                 notify: true,
                 log: true,
                 uiCallback: () => {
@@ -673,17 +673,17 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
         // Add Copy button
         dialog.addButton({
-            label: 'Copy',
+            label: _('Copy'),
             action: () => {
                 // Copy content to clipboard
                 St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, content);
-                this._showNotification('Copied', 'Content copied to clipboard');
+                this._showNotification(_('Copied'), _('Content copied to clipboard'));
             }
         });
 
         // Add close button
         dialog.addButton({
-            label: 'Close',
+            label: _('Close'),
             action: () => {
                 dialog.close();
             },
@@ -707,11 +707,11 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             if (!this._gpClient) return;
             const hostState = await this._gpClient.getHostState();
             if (!this._isDestroyed) {
-                this._showInfoDialog('GlobalProtect Host State', hostState);
+                this._showInfoDialog(_('GlobalProtect Host State'), hostState);
             }
         } catch (e) {
             if (!this._isDestroyed) {
-                ErrorHandler.handle(e, 'Failed to get host state', {
+                ErrorHandler.handle(e, _('Failed to get host state'), {
                     notify: true,
                     log: true
                 });
@@ -742,9 +742,9 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
         try {
             await this._gpClient[commandName]();
-            this._showNotification('GlobalProtect', `${displayName} completed successfully`);
+            this._showNotification('GlobalProtect', _('%s completed successfully').format(displayName));
         } catch (e) {
-            ErrorHandler.handle(e, `${displayName} failed`, {
+            ErrorHandler.handle(e, _('%s failed').format(displayName), {
                 notify: true,
                 log: true,
                 uiCallback: () => {
@@ -778,7 +778,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
         // Add title
         const titleLabel = new St.Label({
-            text: 'Change Portal',
+            text: _('Change Portal'),
             style_class: 'headline',
             x_align: Clutter.ActorAlign.CENTER
         });
@@ -792,14 +792,14 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
         // Current portal label
         const currentLabel = new St.Label({
-            text: `Current portal: ${currentPortal}`,
+            text: _('Current portal: %s').format(currentPortal),
             style: 'font-size: 11pt;'
         });
         contentBox.add_child(currentLabel);
 
         // New portal label
         const newLabel = new St.Label({
-            text: 'New portal address:',
+            text: _('New portal address:'),
             style: 'font-size: 11pt; margin-top: 10px;'
         });
         contentBox.add_child(newLabel);
@@ -807,7 +807,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
         // Portal input field
         const portalEntry = new St.Entry({
             text: currentPortal,
-            hint_text: 'vpn.example.com',
+            hint_text: _('vpn.example.com'),
             style: 'font-size: 11pt; padding: 8px; min-width: 400px;',
             can_focus: true
         });
@@ -815,7 +815,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
         // Info label
         const infoLabel = new St.Label({
-            text: 'After changing, reconnect to VPN.',
+            text: _('After changing, reconnect to VPN.'),
             style: 'font-size: 10pt; margin-top: 10px;'
         });
         contentBox.add_child(infoLabel);
@@ -824,12 +824,12 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
         // Add Save button
         dialog.addButton({
-            label: 'Save',
+            label: _('Save'),
             action: () => {
                 const newPortal = portalEntry.get_text();
                 if (newPortal && newPortal !== currentPortal) {
                     this._settings.set_string('portal-address', newPortal);
-                    this._showNotification('Portal Changed', `Portal set to: ${newPortal}\n\nReconnect to VPN to use new portal.`);
+                    this._showNotification(_('Portal Changed'), _('Portal set to: %s\n\nReconnect to VPN to use new portal.').format(newPortal));
                 }
                 dialog.close();
             },
@@ -838,7 +838,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
         // Add Cancel button
         dialog.addButton({
-            label: 'Cancel',
+            label: _('Cancel'),
             action: () => {
                 dialog.close();
             },
@@ -862,7 +862,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                 this._lastGatewayUpdate = Date.now();
             }
         } catch (e) {
-            ErrorHandler.handle(e, 'Failed to load gateway list', {notify: false, log: true});
+            ErrorHandler.handle(e, _('Failed to load gateway list'), {notify: false, log: true});
         }
     }
 
@@ -890,17 +890,17 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             }
 
             if (!gateways || gateways.length === 0) {
-                const noGatewaysItem = new PopupMenu.PopupMenuItem('No gateways available', {
+                const noGatewaysItem = new PopupMenu.PopupMenuItem(_('No gateways available'), {
                     reactive: false
                 });
                 this._gatewayMenu.menu.addMenuItem(noGatewaysItem);
 
                 // Add info item
-                const infoItem = new PopupMenu.PopupMenuItem('Connect to VPN to see gateways');
+                const infoItem = new PopupMenu.PopupMenuItem(_('Connect to VPN to see gateways'));
                 infoItem.connect('activate', () => {
                     this._showNotification(
-                        'Gateway Selection',
-                        'To see available gateways:\n\n1. Connect to VPN first\n2. Open this menu again to see all gateways\n3. Click on a gateway to switch to it'
+                        _('Gateway Selection'),
+                        _('To see available gateways:\n\n1. Connect to VPN first\n2. Open this menu again to see all gateways\n3. Click on a gateway to switch to it')
                     );
                 });
                 this._gatewayMenu.menu.addMenuItem(infoItem);
@@ -922,9 +922,9 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
                 // Add indicators
                 if (gateway.current) {
-                    label = `✓ ${label} (current)`;
+                    label = _('✓ %s (current)').format(label);
                 } else if (gateway.preferred) {
-                    label = `★ ${label} (preferred)`;
+                    label = _('★ %s (preferred)').format(label);
                 }
 
                 const gatewayItem = new PopupMenu.PopupMenuItem(label, {
@@ -943,15 +943,17 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Add info about gateway count and cache status
             const cacheAge = this._lastGatewayUpdate ? Math.floor((Date.now() - this._lastGatewayUpdate) / 1000) : 0;
-            const cacheInfo = cacheAge > 0 ? ` (cached ${cacheAge}s ago)` : '';
-            const countItem = new PopupMenu.PopupMenuItem(`${gateways.length} gateway(s) available${cacheInfo}`, {
+            const cacheInfo = cacheAge > 0 ? ` ${_('(cached %d s ago)').format(cacheAge)}` : '';
+            const countItem = new PopupMenu.PopupMenuItem(
+                ngettext('%d gateway available', '%d gateways available', gateways.length)
+                    .format(gateways.length) + cacheInfo, {
                 reactive: false,
                 style_class: 'globalprotect-gateway-info'
             });
             this._gatewayMenu.menu.addMenuItem(countItem);
 
             // Add refresh button
-            const refreshItem = new PopupMenu.PopupMenuItem('🔄 Refresh List');
+            const refreshItem = new PopupMenu.PopupMenuItem(`🔄 ${_('Refresh List')}`);
             refreshItem.connect('activate', () => {
                 this._gatewayListCache = null;
                 this._updateGatewayMenu();
@@ -959,16 +961,16 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             this._gatewayMenu.menu.addMenuItem(refreshItem);
 
         } catch (e) {
-            ErrorHandler.handle(e, 'Failed to update gateway menu', {notify: false, log: true});
+            ErrorHandler.handle(e, _('Failed to update gateway menu'), {notify: false, log: true});
 
             // Show error in menu
             this._gatewayMenu.menu.removeAll();
-            const errorItem = new PopupMenu.PopupMenuItem('Failed to load gateways', {
+            const errorItem = new PopupMenu.PopupMenuItem(_('Failed to load gateways'), {
                 reactive: false
             });
             this._gatewayMenu.menu.addMenuItem(errorItem);
 
-            const retryItem = new PopupMenu.PopupMenuItem('Retry');
+            const retryItem = new PopupMenu.PopupMenuItem(_('Retry'));
             retryItem.connect('activate', () => this._updateGatewayMenu());
             this._gatewayMenu.menu.addMenuItem(retryItem);
         }
@@ -990,7 +992,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             this._updateMenu(currentStatus);
 
             // Show notification that we're switching
-            this._showNotification('Switching Gateway', `Switching to ${gatewayLabel}...`);
+            this._showNotification(_('Switching Gateway'), _('Switching to %s...').format(gatewayLabel));
 
             // If connected, disconnect first and wait until actually disconnected
             if (currentStatus && currentStatus.connected) {
@@ -1001,7 +1003,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                 if (this._isDestroyed) return;
 
                 if (!disconnected) {
-                    throw new Error('Could not disconnect before switching gateway. Please try again.');
+                    throw new Error(_('Could not disconnect before switching gateway. Please try again.'));
                 }
             }
 
@@ -1020,14 +1022,14 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             // Force status update by polling immediately
             await this._statusMonitor.forceUpdate();
 
-            this._showNotification('Gateway Changed', `Successfully switched to: ${gatewayLabel}`);
+            this._showNotification(_('Gateway Changed'), _('Successfully switched to: %s').format(gatewayLabel));
         } catch (e) {
             // Clear connecting state on error
             this._isConnecting = false;
             const currentStatus = this._statusMonitor.getCurrentStatus();
             this._updateIcon(currentStatus);
 
-            ErrorHandler.handle(e, 'Failed to switch gateway', {notify: true, log: true});
+            ErrorHandler.handle(e, _('Failed to switch gateway'), {notify: true, log: true});
         }
     }
 
@@ -1060,20 +1062,20 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
                 // Show notification with file path if available
                 if (logPath) {
-                    this._showNotification('Log Collection', `Logs collected successfully.\nFile: ${logPath}\n\nFolder opened in file manager.`);
+                    this._showNotification(_('Log Collection'), _('Logs collected successfully.\nFile: %s\n\nFolder opened in file manager.').format(logPath));
                 } else {
-                    this._showNotification('Log Collection', 'Logs collected successfully.\n\nFolder opened: ~/.GlobalProtect/');
+                    this._showNotification(_('Log Collection'), _('Logs collected successfully.\n\nFolder opened: ~/.GlobalProtect/'));
                 }
             } else {
                 // Folder doesn't exist
                 if (logPath) {
-                    this._showNotification('Log Collection', `Logs collected successfully.\nFile: ${logPath}\n\nNote: ~/.GlobalProtect/ folder not found.`);
+                    this._showNotification(_('Log Collection'), _('Logs collected successfully.\nFile: %s\n\nNote: ~/.GlobalProtect/ folder not found.').format(logPath));
                 } else {
-                    this._showNotification('Log Collection', result);
+                    this._showNotification(_('Log Collection'), result);
                 }
             }
         } catch (e) {
-            ErrorHandler.handle(e, 'Log Collection failed', {notify: true, log: true});
+            ErrorHandler.handle(e, _('Log Collection failed'), {notify: true, log: true});
         } finally {
             // Clear flag and force icon update to correct state
             this._nonConnectionOperationInProgress = false;
@@ -1094,7 +1096,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             await this._gpClient.getHelp();
             // No need to show dialog - browser will open automatically
         } catch (e) {
-            ErrorHandler.handle(e, 'Failed to open help', {notify: true, log: true});
+            ErrorHandler.handle(e, _('Failed to open help'), {notify: true, log: true});
         } finally {
             this._nonConnectionOperationInProgress = false;
             const currentStatus = this._statusMonitor.getCurrentStatus();
@@ -1117,7 +1119,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Add title
             const titleLabel = new St.Label({
-                text: 'Settings',
+                text: _('Settings'),
                 style_class: 'headline',
                 x_align: Clutter.ActorAlign.CENTER
             });
@@ -1131,14 +1133,14 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Portal section
             const portalLabel = new St.Label({
-                text: 'Portal Address:',
+                text: _('Portal Address:'),
                 style: 'font-size: 11pt;'
             });
             contentBox.add_child(portalLabel);
 
             const portalEntry = new St.Entry({
                 text: currentPortal,
-                hint_text: 'vpn.example.com',
+                hint_text: _('vpn.example.com'),
                 style: 'font-size: 11pt; padding: 8px; min-width: 400px;',
                 can_focus: true
             });
@@ -1146,7 +1148,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Poll interval section
             const intervalLabel = new St.Label({
-                text: 'Poll Interval (seconds):',
+                text: _('Poll Interval (seconds):'),
                 style: 'font-size: 11pt; margin-top: 15px;'
             });
             contentBox.add_child(intervalLabel);
@@ -1161,7 +1163,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Info label
             const infoLabel = new St.Label({
-                text: 'Poll interval: how often to check VPN status (recommended: 5-10 seconds)',
+                text: _('Poll interval: how often to check VPN status (recommended: 5-10 seconds)'),
                 style: 'font-size: 10pt; margin-top: 10px;'
             });
             infoLabel.clutter_text.line_wrap = true;
@@ -1170,21 +1172,21 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Username section
             const usernameLabel = new St.Label({
-                text: 'Username (optional):',
+                text: _('Username (optional):'),
                 style: 'font-size: 11pt; margin-top: 15px;'
             });
             contentBox.add_child(usernameLabel);
 
             const usernameEntry = new St.Entry({
                 text: currentUsername,
-                hint_text: 'username',
+                hint_text: _('username'),
                 style: 'font-size: 11pt; padding: 8px; min-width: 200px;',
                 can_focus: true
             });
             contentBox.add_child(usernameEntry);
 
             const usernameInfo = new St.Label({
-                text: 'If specified, will be used for VPN connection. Leave empty to be prompted.',
+                text: _('If specified, will be used for VPN connection. Leave empty to be prompted.'),
                 style: 'font-size: 10pt; margin-top: 5px;'
             });
             usernameInfo.clutter_text.line_wrap = true;
@@ -1199,13 +1201,13 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Clear Credentials section
             const clearCredsLabel = new St.Label({
-                text: 'Clear Credentials:',
+                text: _('Clear Credentials:'),
                 style: 'font-size: 11pt;'
             });
             contentBox.add_child(clearCredsLabel);
 
             const clearCredsButton = new St.Button({
-                label: 'Clear Saved Credentials',
+                label: _('Clear Saved Credentials'),
                 style: 'font-size: 11pt; padding: 8px 16px; background-color: #c01c28; color: #ffffff; border-radius: 6px;',
                 can_focus: true
             });
@@ -1216,7 +1218,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             contentBox.add_child(clearCredsButton);
 
             const clearCredsInfo = new St.Label({
-                text: 'Remove saved username and password from GlobalProtect',
+                text: _('Remove saved username and password from GlobalProtect'),
                 style: 'font-size: 10pt; margin-top: 5px;'
             });
             clearCredsInfo.clutter_text.line_wrap = true;
@@ -1231,7 +1233,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Advanced Settings section
             const advancedLabel = new St.Label({
-                text: 'Advanced Settings:',
+                text: _('Advanced Settings:'),
                 style: 'font-size: 11pt; font-weight: bold;'
             });
             contentBox.add_child(advancedLabel);
@@ -1256,27 +1258,33 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             sslOnlyBox.add_child(sslOnlyCheckbox);
 
             const sslOnlyLabel = new St.Label({
-                text: '  SSL Only Mode',
+                text: `  ${_('SSL Only Mode')}`,
                 style: 'font-size: 11pt; margin-left: 10px;'
             });
             sslOnlyBox.add_child(sslOnlyLabel);
             contentBox.add_child(sslOnlyBox);
 
             const sslOnlyInfo = new St.Label({
-                text: 'Force SSL-only connections (more secure)',
+                text: _('Force SSL-only connections (more secure)'),
                 style: 'font-size: 10pt; margin-top: 5px; margin-left: 30px;'
             });
             contentBox.add_child(sslOnlyInfo);
 
             // Log Level dropdown
             const logLevelLabel = new St.Label({
-                text: 'Log Level:',
+                text: _('Log Level:'),
                 style: 'font-size: 11pt; margin-top: 15px;'
             });
             contentBox.add_child(logLevelLabel);
 
             const currentLogLevel = this._settings.get_string('log-level');
             const logLevels = ['error', 'warning', 'info', 'debug'];
+            const logLevelNames = {
+                error: _('Error'),
+                warning: _('Warning'),
+                info: _('Info'),
+                debug: _('Debug')
+            };
 
             const logLevelBox = new St.BoxLayout({
                 style: 'margin-top: 5px; spacing: 10px;'
@@ -1288,7 +1296,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             for (const level of logLevels) {
                 const isSelected = level === currentLogLevel;
                 const button = new St.Button({
-                    label: level.charAt(0).toUpperCase() + level.slice(1),
+                    label: logLevelNames[level],
                     style: `font-size: 10pt; padding: 6px 12px; border-radius: 4px; ${isSelected ? 'background-color: #3584e4; color: #ffffff;' : 'background-color: #3a3a3a; color: #cccccc;'}`,
                     can_focus: true
                 });
@@ -1310,20 +1318,20 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             contentBox.add_child(logLevelBox);
 
             const logLevelInfo = new St.Label({
-                text: 'Higher levels provide more detailed logs (debug = most verbose)',
+                text: _('Higher levels provide more detailed logs (debug = most verbose)'),
                 style: 'font-size: 10pt; margin-top: 5px;'
             });
             contentBox.add_child(logLevelInfo);
 
             // Import Certificate button
             const importCertLabel = new St.Label({
-                text: 'Client Certificate:',
+                text: _('Client Certificate:'),
                 style: 'font-size: 11pt; margin-top: 15px;'
             });
             contentBox.add_child(importCertLabel);
 
             const importCertButton = new St.Button({
-                label: 'Import Certificate...',
+                label: _('Import Certificate...'),
                 style: 'font-size: 11pt; padding: 8px 16px; background-color: #3a3a3a; color: #ffffff; border-radius: 6px;',
                 can_focus: true
             });
@@ -1334,7 +1342,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             contentBox.add_child(importCertButton);
 
             const importCertInfo = new St.Label({
-                text: 'Import client certificate for authentication',
+                text: _('Import client certificate for authentication'),
                 style: 'font-size: 10pt; margin-top: 5px;'
             });
             contentBox.add_child(importCertInfo);
@@ -1343,7 +1351,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Add Save button
             dialog.addButton({
-                label: 'Save',
+                label: _('Save'),
                 action: () => {
                     const newPortal = portalEntry.get_text();
                     const newIntervalText = intervalEntry.get_text();
@@ -1351,17 +1359,17 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                     const newUsername = usernameEntry.get_text();
 
                     let changed = false;
-                    let message = 'Settings saved:\n';
+                    let message = _('Settings saved:') + '\n';
 
                     if (newPortal && newPortal !== currentPortal) {
                         this._settings.set_string('portal-address', newPortal);
-                        message += `\nPortal: ${newPortal}`;
+                        message += `\n${_('Portal: %s').format(newPortal)}`;
                         changed = true;
                     }
 
                     if (!isNaN(newInterval) && newInterval > 0 && newInterval !== currentInterval) {
                         this._settings.set_int('poll-interval', newInterval);
-                        message += `\nPoll interval: ${newInterval}s`;
+                        message += `\n${_('Poll interval: %d s').format(newInterval)}`;
                         changed = true;
 
                         // Restart status monitor with new interval
@@ -1374,36 +1382,36 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
                     if (newUsername !== currentUsername) {
                         this._settings.set_string('username', newUsername);
-                        message += `\nUsername: ${newUsername || '(not set)'}`;
+                        message += `\n${_('Username: %s').format(newUsername || _('(not set)'))}`;
                         changed = true;
                     }
 
                     // Save SSL Only setting
                     if (sslOnlyChecked !== currentSslOnly) {
                         this._settings.set_boolean('ssl-only', sslOnlyChecked);
-                        message += `\nSSL Only: ${sslOnlyChecked ? 'enabled' : 'disabled'}`;
+                        message += `\n${_('SSL Only: %s').format(sslOnlyChecked ? _('enabled') : _('disabled'))}`;
                         changed = true;
 
                         // Apply SSL only setting
                         this._gpClient.setConfig(sslOnlyChecked).catch(e => {
-                            ErrorHandler.handle(e, 'Failed to apply SSL only setting', {notify: true, log: true});
+                            ErrorHandler.handle(e, _('Failed to apply SSL only setting'), {notify: true, log: true});
                         });
                     }
 
                     // Save Log Level setting
                     if (selectedLogLevel !== currentLogLevel) {
                         this._settings.set_string('log-level', selectedLogLevel);
-                        message += `\nLog Level: ${selectedLogLevel}`;
+                        message += `\n${_('Log Level: %s').format(logLevelNames[selectedLogLevel])}`;
                         changed = true;
 
                         // Apply log level setting
                         this._gpClient.setLogLevel(selectedLogLevel).catch(e => {
-                            ErrorHandler.handle(e, 'Failed to apply log level', {notify: true, log: true});
+                            ErrorHandler.handle(e, _('Failed to apply log level'), {notify: true, log: true});
                         });
                     }
 
                     if (changed) {
-                        this._showNotification('Settings', message);
+                        this._showNotification(_('Settings'), message);
                     }
 
                     dialog.close();
@@ -1413,7 +1421,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Add Cancel button
             dialog.addButton({
-                label: 'Cancel',
+                label: _('Cancel'),
                 action: () => {
                     dialog.close();
                 },
@@ -1425,7 +1433,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             global.stage.set_key_focus(portalEntry);
 
         } catch (e) {
-            ErrorHandler.handle(e, 'Failed to show settings dialog', {notify: true, log: true});
+            ErrorHandler.handle(e, _('Failed to show settings dialog'), {notify: true, log: true});
         }
     }
 
@@ -1438,9 +1446,9 @@ class GlobalProtectIndicator extends PanelMenu.Button {
     async _reportIssue() {
         try {
             const report = await this._gpClient.reportIssue();
-            this._showInfoDialog('Issue Report', report);
+            this._showInfoDialog(_('Issue Report'), report);
         } catch (e) {
-            ErrorHandler.handle(e, 'Failed to generate issue report', {
+            ErrorHandler.handle(e, _('Failed to generate issue report'), {
                 notify: true,
                 log: true
             });
@@ -1456,9 +1464,9 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
         try {
             const errors = await this._gpClient.getErrors();
-            this._showInfoDialog('GlobalProtect Errors', errors);
+            this._showInfoDialog(_('GlobalProtect Errors'), errors);
         } catch (e) {
-            ErrorHandler.handle(e, 'Failed to get errors', {notify: true, log: true});
+            ErrorHandler.handle(e, _('Failed to get errors'), {notify: true, log: true});
         } finally {
             // Wait a bit before clearing flag to let status stabilize
             await this._delay(200);
@@ -1477,9 +1485,9 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
         try {
             const notifications = await this._gpClient.getNotifications();
-            this._showInfoDialog('GlobalProtect Notifications', notifications);
+            this._showInfoDialog(_('GlobalProtect Notifications'), notifications);
         } catch (e) {
-            ErrorHandler.handle(e, 'Failed to get notifications', {notify: true, log: true});
+            ErrorHandler.handle(e, _('Failed to get notifications'), {notify: true, log: true});
         } finally {
             // Wait a bit before clearing flag to let status stabilize
             await this._delay(200);
@@ -1498,32 +1506,40 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
         try {
             const version = await this._gpClient.getVersion();
-            const content = `${version}\n\n` +
-                'gp-gnome - GNOME Shell Extension\n' +
-                'Extension version: 1.4.0\n\n' +
-                'Description:\n' +
-                'GNOME Shell extension gp-gnome for GlobalProtect VPN CLI (PanGPLinux) integration.\n' +
-                'Provides complete VPN management with native GNOME integration,\n' +
-                'comprehensive functionality, and intelligent handling of known CLI issues.\n\n' +
-                'Designed for GlobalProtect CLI (also known as PanGPLinux) -\n' +
-                'the official Palo Alto Networks VPN client for Linux.\n\n' +
-                'Features:\n' +
-                '• Connect/disconnect with MFA support\n' +
-                '• Real-time connection monitoring\n' +
-                '• Gateway selection and switching\n' +
-                '• Interactive settings configuration\n' +
-                '• Advanced operations (HIP, logs, network rediscovery)\n' +
-                '• Automatic retry logic for CLI bugs\n' +
-                '• Auto-disconnect on logout\n' +
-                '• Native GNOME Shell integration\n\n' +
-                'Author: Anton Isaiev\n' +
-                'Email: totoshko88@gmail.com\n' +
-                'Repository: https://github.com/totoshko88/gp-gnome\n' +
-                'License: GPL-3.0-or-later\n\n' +
-                '© 2025 Anton Isaiev';
-            this._showInfoDialog('About gp-gnome', content);
+            const content = [
+                `${version}`,
+                '',
+                'gp-gnome - ' + _('GNOME Shell Extension'),
+                _('Extension version: %s').format('1.4.0'),
+                '',
+                _('Description:'),
+                _('GNOME Shell extension gp-gnome for GlobalProtect VPN CLI (PanGPLinux) integration.'),
+                _('Provides complete VPN management with native GNOME integration,'),
+                _('comprehensive functionality, and intelligent handling of known CLI issues.'),
+                '',
+                _('Designed for GlobalProtect CLI (also known as PanGPLinux) -'),
+                _('the official Palo Alto Networks VPN client for Linux.'),
+                '',
+                _('Features:'),
+                '• ' + _('Connect/disconnect with MFA support'),
+                '• ' + _('Real-time connection monitoring'),
+                '• ' + _('Gateway selection and switching'),
+                '• ' + _('Interactive settings configuration'),
+                '• ' + _('Advanced operations (HIP, logs, network rediscovery)'),
+                '• ' + _('Automatic retry logic for CLI bugs'),
+                '• ' + _('Auto-disconnect on logout'),
+                '• ' + _('Native GNOME Shell integration'),
+                '',
+                _('Author: %s').format('Anton Isaiev'),
+                'Email: totoshko88@gmail.com',
+                'Repository: https://github.com/totoshko88/gp-gnome',
+                _('License: %s').format('GPL-3.0-or-later'),
+                '',
+                '© 2025 Anton Isaiev'
+            ].join('\n');
+            this._showInfoDialog(_('About gp-gnome'), content);
         } catch (e) {
-            ErrorHandler.handle(e, 'Failed to get version', {notify: true, log: true});
+            ErrorHandler.handle(e, _('Failed to get version'), {notify: true, log: true});
         } finally {
             this._nonConnectionOperationInProgress = false;
             const currentStatus = this._statusMonitor.getCurrentStatus();
@@ -1539,11 +1555,11 @@ class GlobalProtectIndicator extends PanelMenu.Button {
         try {
             // Show confirmation
             this._showNotification(
-                'Clear Credentials',
-                'This will clear your saved credentials and disconnect from VPN.\n\nTo proceed, run in terminal:\nglobalprotect remove-user\n\nNote: This command requires confirmation (y/n)'
+                _('Clear Credentials'),
+                _('This will clear your saved credentials and disconnect from VPN.\n\nTo proceed, run in terminal:\nglobalprotect remove-user\n\nNote: This command requires confirmation (y/n)')
             );
         } catch (e) {
-            ErrorHandler.handle(e, 'Failed to clear credentials', {notify: true, log: true});
+            ErrorHandler.handle(e, _('Failed to clear credentials'), {notify: true, log: true});
         }
     }
 
@@ -1558,7 +1574,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Add title
             const titleLabel = new St.Label({
-                text: 'Import Certificate',
+                text: _('Import Certificate'),
                 style_class: 'headline',
                 x_align: Clutter.ActorAlign.CENTER
             });
@@ -1572,14 +1588,14 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Info label
             const infoLabel = new St.Label({
-                text: 'Enter the full path to your certificate file:',
+                text: _('Enter the full path to your certificate file:'),
                 style: 'font-size: 11pt;'
             });
             contentBox.add_child(infoLabel);
 
             // Certificate path entry
             const certPathEntry = new St.Entry({
-                hint_text: '/path/to/certificate.pem',
+                hint_text: _('/path/to/certificate.pem'),
                 style: 'font-size: 11pt; padding: 8px; min-width: 450px;',
                 can_focus: true
             });
@@ -1587,7 +1603,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Example label
             const exampleLabel = new St.Label({
-                text: 'Example: /home/user/certificates/client.pem',
+                text: _('Example: /home/user/certificates/client.pem'),
                 style: 'font-size: 10pt; margin-top: 5px;'
             });
             contentBox.add_child(exampleLabel);
@@ -1603,12 +1619,12 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Add Import button
             dialog.addButton({
-                label: 'Import',
+                label: _('Import'),
                 action: async () => {
                     const certPath = certPathEntry.get_text().trim();
 
                     if (!certPath) {
-                        validationLabel.text = '⚠ Please enter a certificate path';
+                        validationLabel.text = `⚠ ${_('Please enter a certificate path')}`;
                         validationLabel.style = 'font-size: 10pt; margin-top: 10px;';
                         return;
                     }
@@ -1616,14 +1632,14 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                     // Validate file exists
                     const file = Gio.File.new_for_path(certPath);
                     if (!file.query_exists(null)) {
-                        validationLabel.text = `❌ File not found: ${certPath}`;
+                        validationLabel.text = `❌ ${_('File not found: %s').format(certPath)}`;
                         validationLabel.style = 'font-size: 10pt; margin-top: 10px;';
                         return;
                     }
 
                     // Check file extension
                     if (!certPath.endsWith('.pem') && !certPath.endsWith('.crt') && !certPath.endsWith('.cer')) {
-                        validationLabel.text = '⚠ Warning: File should be .pem, .crt, or .cer';
+                        validationLabel.text = `⚠ ${_('Warning: File should be .pem, .crt, or .cer')}`;
                         validationLabel.style = 'font-size: 10pt; margin-top: 10px;';
                         // Continue anyway
                     }
@@ -1631,14 +1647,14 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                     dialog.close();
 
                     // Show importing notification
-                    this._showNotification('Import Certificate', 'Importing certificate...');
+                    this._showNotification(_('Import Certificate'), _('Importing certificate...'));
 
                     // Import certificate
                     try {
                         const result = await this._gpClient.importCertificate(certPath);
-                        this._showNotification('Certificate Imported', result);
+                        this._showNotification(_('Certificate Imported'), result);
                     } catch (e) {
-                        ErrorHandler.handle(e, 'Failed to import certificate', {
+                        ErrorHandler.handle(e, _('Failed to import certificate'), {
                             notify: true,
                             log: true
                         });
@@ -1649,7 +1665,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
             // Add Cancel button
             dialog.addButton({
-                label: 'Cancel',
+                label: _('Cancel'),
                 action: () => {
                     dialog.close();
                 },
@@ -1661,7 +1677,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             global.stage.set_key_focus(certPathEntry);
 
         } catch (e) {
-            ErrorHandler.handle(e, 'Failed to show import dialog', {notify: true, log: true});
+            ErrorHandler.handle(e, _('Failed to show import dialog'), {notify: true, log: true});
         }
     }
 

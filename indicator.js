@@ -549,14 +549,14 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                 const username = this._settings.get_string('username');
 
                 // Status callback to handle MFA states
-                const statusCallback = (state) => {
+                const statusCallback = (state, message) => {
                     if (state === 'mfa-waiting') {
                         this._isConnecting = false;
                         this._isMfaWaiting = true;
                         this._updateIcon(status);
                         this._updateMenu(status);
                         // Force MFA notification as it's important
-                        this._showNotification('GlobalProtect', _('Waiting for authentication...'), true);
+                        this._showNotification('GlobalProtect', message, true);
                     } else if (state === 'mfa-failed') {
                         this._isConnecting = false;
                         this._isMfaWaiting = false;

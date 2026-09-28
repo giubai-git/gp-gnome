@@ -549,14 +549,14 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                 const username = this._settings.get_string('username');
 
                 // Status callback to handle MFA states
-                const statusCallback = (state, message) => {
+                const statusCallback = (state) => {
                     if (state === 'mfa-waiting') {
                         this._isConnecting = false;
                         this._isMfaWaiting = true;
                         this._updateIcon(status);
                         this._updateMenu(status);
                         // Force MFA notification as it's important
-                        this._showNotification('GlobalProtect', message, true);
+                        this._showNotification('GlobalProtect', _('Waiting for authentication...'), true);
                     } else if (state === 'mfa-failed') {
                         this._isConnecting = false;
                         this._isMfaWaiting = false;
@@ -603,7 +603,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             }
 
             // Use ErrorHandler for consistent error handling
-            ErrorHandler.handle(e, _('Connection toggle failed'), {
+            ErrorHandler.handle(e, 'Connection toggle failed', {
                 notify: true,
                 log: true,
                 uiCallback: () => {
@@ -711,7 +711,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             }
         } catch (e) {
             if (!this._isDestroyed) {
-                ErrorHandler.handle(e, _('Failed to get host state'), {
+                ErrorHandler.handle(e, 'Failed to get host state', {
                     notify: true,
                     log: true
                 });
@@ -744,7 +744,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             await this._gpClient[commandName]();
             this._showNotification('GlobalProtect', _('%s completed successfully').format(displayName));
         } catch (e) {
-            ErrorHandler.handle(e, _('%s failed').format(displayName), {
+            ErrorHandler.handle(e, `${displayName} failed`, {
                 notify: true,
                 log: true,
                 uiCallback: () => {
@@ -862,7 +862,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                 this._lastGatewayUpdate = Date.now();
             }
         } catch (e) {
-            ErrorHandler.handle(e, _('Failed to load gateway list'), {notify: false, log: true});
+            ErrorHandler.handle(e, 'Failed to load gateway list', {notify: false, log: true});
         }
     }
 
@@ -961,7 +961,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             this._gatewayMenu.menu.addMenuItem(refreshItem);
 
         } catch (e) {
-            ErrorHandler.handle(e, _('Failed to update gateway menu'), {notify: false, log: true});
+            ErrorHandler.handle(e, 'Failed to update gateway menu', {notify: false, log: true});
 
             // Show error in menu
             this._gatewayMenu.menu.removeAll();
@@ -1029,7 +1029,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             const currentStatus = this._statusMonitor.getCurrentStatus();
             this._updateIcon(currentStatus);
 
-            ErrorHandler.handle(e, _('Failed to switch gateway'), {notify: true, log: true});
+            ErrorHandler.handle(e, 'Failed to switch gateway', {notify: true, log: true});
         }
     }
 
@@ -1075,7 +1075,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                 }
             }
         } catch (e) {
-            ErrorHandler.handle(e, _('Log Collection failed'), {notify: true, log: true});
+            ErrorHandler.handle(e, 'Log Collection failed', {notify: true, log: true});
         } finally {
             // Clear flag and force icon update to correct state
             this._nonConnectionOperationInProgress = false;
@@ -1096,7 +1096,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             await this._gpClient.getHelp();
             // No need to show dialog - browser will open automatically
         } catch (e) {
-            ErrorHandler.handle(e, _('Failed to open help'), {notify: true, log: true});
+            ErrorHandler.handle(e, 'Failed to open help', {notify: true, log: true});
         } finally {
             this._nonConnectionOperationInProgress = false;
             const currentStatus = this._statusMonitor.getCurrentStatus();
@@ -1394,7 +1394,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
                         // Apply SSL only setting
                         this._gpClient.setConfig(sslOnlyChecked).catch(e => {
-                            ErrorHandler.handle(e, _('Failed to apply SSL only setting'), {notify: true, log: true});
+                            ErrorHandler.handle(e, 'Failed to apply SSL only setting', {notify: true, log: true});
                         });
                     }
 
@@ -1406,7 +1406,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
 
                         // Apply log level setting
                         this._gpClient.setLogLevel(selectedLogLevel).catch(e => {
-                            ErrorHandler.handle(e, _('Failed to apply log level'), {notify: true, log: true});
+                            ErrorHandler.handle(e, 'Failed to apply log level', {notify: true, log: true});
                         });
                     }
 
@@ -1433,7 +1433,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             global.stage.set_key_focus(portalEntry);
 
         } catch (e) {
-            ErrorHandler.handle(e, _('Failed to show settings dialog'), {notify: true, log: true});
+            ErrorHandler.handle(e, 'Failed to show settings dialog', {notify: true, log: true});
         }
     }
 
@@ -1448,7 +1448,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             const report = await this._gpClient.reportIssue();
             this._showInfoDialog(_('Issue Report'), report);
         } catch (e) {
-            ErrorHandler.handle(e, _('Failed to generate issue report'), {
+            ErrorHandler.handle(e, 'Failed to generate issue report', {
                 notify: true,
                 log: true
             });
@@ -1466,7 +1466,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             const errors = await this._gpClient.getErrors();
             this._showInfoDialog(_('GlobalProtect Errors'), errors);
         } catch (e) {
-            ErrorHandler.handle(e, _('Failed to get errors'), {notify: true, log: true});
+            ErrorHandler.handle(e, 'Failed to get errors', {notify: true, log: true});
         } finally {
             // Wait a bit before clearing flag to let status stabilize
             await this._delay(200);
@@ -1487,7 +1487,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             const notifications = await this._gpClient.getNotifications();
             this._showInfoDialog(_('GlobalProtect Notifications'), notifications);
         } catch (e) {
-            ErrorHandler.handle(e, _('Failed to get notifications'), {notify: true, log: true});
+            ErrorHandler.handle(e, 'Failed to get notifications', {notify: true, log: true});
         } finally {
             // Wait a bit before clearing flag to let status stabilize
             await this._delay(200);
@@ -1539,7 +1539,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             ].join('\n');
             this._showInfoDialog(_('About gp-gnome'), content);
         } catch (e) {
-            ErrorHandler.handle(e, _('Failed to get version'), {notify: true, log: true});
+            ErrorHandler.handle(e, 'Failed to get version', {notify: true, log: true});
         } finally {
             this._nonConnectionOperationInProgress = false;
             const currentStatus = this._statusMonitor.getCurrentStatus();
@@ -1559,7 +1559,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                 _('This will clear your saved credentials and disconnect from VPN.\n\nTo proceed, run in terminal:\nglobalprotect remove-user\n\nNote: This command requires confirmation (y/n)')
             );
         } catch (e) {
-            ErrorHandler.handle(e, _('Failed to clear credentials'), {notify: true, log: true});
+            ErrorHandler.handle(e, 'Failed to clear credentials', {notify: true, log: true});
         }
     }
 
@@ -1654,7 +1654,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
                         const result = await this._gpClient.importCertificate(certPath);
                         this._showNotification(_('Certificate Imported'), result);
                     } catch (e) {
-                        ErrorHandler.handle(e, _('Failed to import certificate'), {
+                        ErrorHandler.handle(e, 'Failed to import certificate', {
                             notify: true,
                             log: true
                         });
@@ -1677,7 +1677,7 @@ class GlobalProtectIndicator extends PanelMenu.Button {
             global.stage.set_key_focus(certPathEntry);
 
         } catch (e) {
-            ErrorHandler.handle(e, _('Failed to show import dialog'), {notify: true, log: true});
+            ErrorHandler.handle(e, 'Failed to show import dialog', {notify: true, log: true});
         }
     }
 

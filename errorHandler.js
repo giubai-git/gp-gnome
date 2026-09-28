@@ -21,6 +21,7 @@
  */
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 /**
  * ErrorHandler - Centralized error handling utility
@@ -63,7 +64,7 @@ export class ErrorHandler {
         // Show error notification to user using Main.notifyError()
         // This displays a red/warning style notification
         if (notify) {
-            Main.notifyError('GlobalProtect Error', userMessage);
+            Main.notifyError(_('GlobalProtect Error'), userMessage);
         }
 
         // Execute UI callback if provided
@@ -87,50 +88,50 @@ export class ErrorHandler {
         if (lowerMessage.includes('not installed') ||
             lowerMessage.includes('not in path') ||
             lowerMessage.includes('command not found')) {
-            return 'GlobalProtect CLI is not installed or not in PATH';
+            return _('GlobalProtect CLI is not installed or not in PATH');
         }
 
         // Timeout errors
         if (lowerMessage.includes('timeout') || lowerMessage.includes('timed out')) {
-            return 'Operation timed out. Please try again.';
+            return _('Operation timed out. Please try again.');
         }
 
         // Authentication errors
         if (lowerMessage.includes('authentication') ||
             lowerMessage.includes('auth') ||
             lowerMessage.includes('credentials')) {
-            return 'Authentication failed. Please check your credentials.';
+            return _('Authentication failed. Please check your credentials.');
         }
 
         // Portal/connection errors
         if (lowerMessage.includes('portal')) {
-            return 'Invalid portal address or portal unreachable';
+            return _('Invalid portal address or portal unreachable');
         }
 
         // Network errors
         if (lowerMessage.includes('network') ||
             lowerMessage.includes('connection refused') ||
             lowerMessage.includes('unreachable')) {
-            return 'Network error. Please check your connection.';
+            return _('Network error. Please check your connection.');
         }
 
         // Permission errors
         if (lowerMessage.includes('permission') ||
             lowerMessage.includes('access denied')) {
-            return 'Permission denied. You may need administrator privileges.';
+            return _('Permission denied. You may need administrator privileges.');
         }
 
         // MFA errors
         if (lowerMessage.includes('mfa') ||
             lowerMessage.includes('multi-factor') ||
             lowerMessage.includes('2fa')) {
-            return 'Multi-factor authentication required or failed';
+            return _('Multi-factor authentication required or failed');
         }
 
         // Configuration errors
         if (lowerMessage.includes('configuration') ||
             lowerMessage.includes('config')) {
-            return 'Configuration error. Please check your settings.';
+            return _('Configuration error. Please check your settings.');
         }
 
         // Generic fallback - sanitize and return
@@ -188,7 +189,7 @@ export class ErrorHandler {
      */
     static _sanitizeForUser(message) {
         if (!message || typeof message !== 'string') {
-            return 'An error occurred. Please check the logs for details.';
+            return _('An error occurred. Please check the logs for details.');
         }
 
         // If message is too long, truncate it
@@ -204,7 +205,7 @@ export class ErrorHandler {
             sanitized = sanitized.replace(/^Error:\s*/i, '');
         }
 
-        return sanitized || 'An error occurred. Please check the logs for details.';
+        return sanitized || _('An error occurred. Please check the logs for details.');
     }
 
     /**

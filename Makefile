@@ -11,6 +11,15 @@ SCHEMA_FILES = schemas/org.gnome.shell.extensions.gp-gnome.gschema.xml
 ICON_FILES = icons/*.svg
 PO_DIR = po
 
+define compile_translations
+	@for po in $(PO_DIR)/*.po; do \
+		[ -e "$$po" ] || continue; \
+		lang=$$(basename "$$po" .po); \
+		mkdir -p "$(1)/locale/$$lang/LC_MESSAGES"; \
+		msgfmt -o "$(1)/locale/$$lang/LC_MESSAGES/$(EXTENSION_UUID).mo" "$$po" || exit 1; \
+	done
+endef
+
 .PHONY: all install uninstall clean dist package test help pot
 
 all: help
@@ -38,6 +47,7 @@ install:
 	@cp $(EXTENSION_FILES) $(INSTALL_DIR)/
 	@cp $(SCHEMA_FILES) $(INSTALL_DIR)/schemas/
 	@cp $(ICON_FILES) $(INSTALL_DIR)/icons/
+	$(call compile_translations,$(INSTALL_DIR))
 	@glib-compile-schemas $(INSTALL_DIR)/schemas/
 	@echo "Extension installed to $(INSTALL_DIR)"
 	@echo ""
@@ -67,6 +77,7 @@ dist: clean
 	@cp LICENSE $(BUILD_DIR)/
 	@cp $(SCHEMA_FILES) $(BUILD_DIR)/schemas/
 	@cp $(ICON_FILES) $(BUILD_DIR)/icons/
+	$(call compile_translations,$(BUILD_DIR))
 	@cd $(BUILD_DIR) && zip -r ../$(DIST_DIR)/$(EXTENSION_UUID).zip .
 	@echo "Distribution package created: $(DIST_DIR)/$(EXTENSION_UUID).zip"
 	@echo "Note: gschemas.compiled will be generated during installation"
